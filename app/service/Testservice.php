@@ -1,0 +1,126 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: 13566
+ * Date: 2017/11/8
+ * Time: 21:42
+ */
+namespace App\Service;
+
+use App\Http\ModifyModel;
+use App\Http\TestModel3;
+use App\Http\TestModel2;
+use App\Http\TestModel1;
+use App\Http\ModefyModel;
+use database\seeds\MySeeder;
+use Models\Test;
+
+class Testservice
+{
+    //
+    public function selectSpecific($id)
+    {
+        return TestModel1::find($id);
+    }
+
+    public function selectAll($id)
+    {
+        return TestModel1::where('authorid',$id)->get();
+    }
+
+    public function selectinfo($id)
+    {
+        return TestModel3::find($id);
+    }
+
+    public function selectSelf($id)
+    {
+        return TestModel1::where('authorid',$id)->get();
+    }
+
+
+    public function publish($data)
+    {
+        $res = new TestModel1;
+        $res->content = $data->content;
+        $res->authorid = config('app.userID');
+        if($res->save())
+            return true;
+        return false;
+    }
+
+
+    public function modifyArticle($data)
+    {
+        $check_id = (int)config('app.userID');
+        $res = TestModel1::find($data->id);
+
+        if($res->authorid != $check_id)
+            return "not hiself article";
+
+        $res->content = $data->content;
+        if($res->save())
+            return true;
+        return false;
+    }
+
+    public function deleteArticle($id)
+    {
+        $res = TestModel1::find($id);
+        $check_id = config('app.userID');
+
+        if($check_id != $res->authorid)
+            return 'not hiself article';
+
+        $res->hasdelete = 1;
+        if($res->save())
+            return true;
+        return false;
+    }
+
+    public function selectDetail($id)
+    {
+        return TestModel1::find($id);
+    }
+
+    public function deleteComment($id)
+    {
+        $res = TestModel2::find($id);
+        $check_id = config('app.userID');
+
+        if($check_id != $res->authorid)
+            return 'not hiself article';
+
+        $res->hasdelete = 1;
+        if($res->save())
+            return true;
+        return false;
+    }
+
+    public function addComment($data)
+    {
+        $res = new TestModel2;
+        $res->content = $data->comment;
+        $res->authorid = $data->authorid;
+        $res->commentedid = $data->commentedid;
+        if($res->save())
+            return true;
+        return false;
+    }
+
+    public function selectSelfInfo($id)
+    {
+        return TestModel3::find($id);
+    }
+
+    public function modifySelfMessage($data)
+    {
+        $id=config('app.userID');
+        $res = TestModel3::find($id);
+        $res->username = $data->name;
+        $res->photo_addr = $data->photo_addr;
+        if($res->save())
+            return true;
+        return false;
+    }
+}
