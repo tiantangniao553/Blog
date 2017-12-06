@@ -6,13 +6,12 @@
 <script type="text/javascript">
 
 function restore(){
-    element = window.getElementById('name');
-    element.value = {{$name}};
+    document.getElementById('name').value = '{{$name}}';
 }
 
 function cancel(){
     if(confirm("确认取消修改吗")){
-        location.href("");
+        window.location.href('/try');
     }
 }
 

@@ -21,7 +21,7 @@
             <td colspan="2">
             <form>
                 <a href="/updateinfo">
-                    <input type="button" onclick="window.location.href('/updateinfo')"
+                    <input type="button" onclick="window.location.href='/updateinfo'"
                            value="修改个人信息">
                 </a>
             </form>

@@ -73,6 +73,9 @@ Route::post("/blog","TestController@publish")
     ->middleware("checkvisitor");
 
 //修改自己的博文 check
+Route::get("/updateArticle/{$id}",function() {
+    return view()
+})
 Route::put("/blog/{id}","TestController@modifyArticle")
     ->middleware("checkvisitor");
 

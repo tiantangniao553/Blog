@@ -25,23 +25,26 @@ class TestController extends Controller
     public function getAll($id)
     {
         $testservice1 =new Testservice();
-        $res = $testservice1->selectAll(1);
+        $res = $testservice1->selectAll($id);
 
         if(!$res)
             return response()->json(['message'=>'He is too lazy to leave anything']);
 
         $i=0;
         $result=[];
+
         foreach ($res as $key => $value)
         {
-            if($res[$key]->hasdelete === 0)
-                $result[$i]=$value;
-            $i++;
+            if($res[$key]->hasdelete == 0)
+            {
+                $result[$i] = $value;
+                $i++;
+            }
         }
 
         $res = $testservice1->selectinfo($id);
 
-        return view('articles',['result'=>$result,'authorid'=>$res->id,'name'=>$res->username]);
+        return view('articles',['result'=>$result,'authorid'=>$res->id,'name'=>$res->name]);
 
     }
     //获取博主信息 v
@@ -110,8 +113,8 @@ class TestController extends Controller
     {
         $testservice1 =new Testservice();
         $res = $testservice1->selectDetail($id);
-        if($res)
-            return $res;
+        if($res->hasdeleted == 0)
+            return view('')
         return response()->json(['message'=>'no such article']);
     }
     //删除评论

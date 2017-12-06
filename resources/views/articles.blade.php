@@ -3,8 +3,15 @@
 
 @section('script')
 <script>
+
 function deleteArticle() {
-    confirm("你确定要删除该博文吗");
+    if(confirm("你确定要删除该博文吗")) {
+
+    }
+}
+
+function modifyarticle(id) {
+    window.location.href='/updateArticle/'+id;
 }
 </script>
 @show
@@ -33,7 +40,7 @@ function deleteArticle() {
             </tr>
             <tr>
                 <td colspan="4">
-                    <input type="button" onclick="window.position.href('/updateArticle/{{$result[$key]->id}}')" value="修改博文">
+                    <input type="button" value="修改博文" onclick="modifyarticle({{$result[$key]->id}})">
                     <input type="button" onclick="deleteArticle()" value="删除博文">
                 </td>
             </tr>
