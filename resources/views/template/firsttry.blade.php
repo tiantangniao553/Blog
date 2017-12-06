@@ -12,6 +12,7 @@ and open the template in the editor.
 <title>my first try</title>
 
 <style type="text/css">
+
 h1{
     position:absolute;
     margin-left:60%;
@@ -38,21 +39,21 @@ h1{
 
 .head1{
     height:400px;
-    width:1920px;
+    width:1600px;
     background-image:url('/images/headbg.jpg');
     background-size:100% 100%;
 }
 
 .middle{
     width:1000px;
-    position:absolute;
+    position:relative;
     text-align:center;
 }
 .table-index{
     position:relative;
     padding-top:275px;
-    padding-left:300px;
-    width:1400px;
+    padding-left:200px;
+    width:1300px;
     height:100px;
 }
 
@@ -91,7 +92,7 @@ h1{
 
 .capacity{
     width:500px;
-    margin-left:700px;
+    margin-left:500px;
     margin-top:50px;
     background-color: #ff9f91;
 }

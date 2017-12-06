@@ -13,29 +13,46 @@
 
 use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Auth;
+
+
 
 Route::get('/', function () {
     return view('welcome');
+});
+//主页
+Route::get('/index',function(){
+    return view('index');
 });
 
 Route::get('/f', function () {
     return view('firsttry');
 });
 
-Route::get('/try','TestController@getselfInfo');
+//假主页
+Route::get('/try',function (){
+    if(Auth::check())
+    {
+        $a = new TestController();
+        return $a->getInfo();
+    }
+    return redirect(url('index'));
+});
 
+//查询
 Route::get('select',function() {
     return view('select');
 });
 
-Route::get("test", "MyController@first_try");
-
 Route::get("mysql","MysqlController@chaxun");
+
+Route::get("test", "MyController@first_try");
 
 
 //获取特定博文 1
 Route::get("/visitor/blog/{id}","TestController@getSpecific");
 
+        //页面跳转
 Route::get("/selectById",function(){
     $id=input::get('id');
     return redirect(url("visitor/blog/{$id}"));

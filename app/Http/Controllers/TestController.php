@@ -31,6 +31,7 @@ class TestController extends Controller
             return response()->json(['message'=>'He is too lazy to leave anything']);
 
         $i=0;
+        $result=[];
         foreach ($res as $key => $value)
         {
             if($res[$key]->hasdelete === 0)
@@ -50,7 +51,11 @@ class TestController extends Controller
         $testservice1 =new Testservice();
         $res = $testservice1->selectinfo($id);
         if($res)
-            return view('information',['id'=>$res->id,'name'=>$res->username,'photo'=>$res->photo_addr]);
+            return view('information',[
+                'id'=>$res->id,
+                'name'=>$res->name,
+                'photo'=>$res->photo_addr
+            ]);
         return response()->json(['message'=>'No such person']);
 
     }
@@ -159,7 +164,12 @@ class TestController extends Controller
         $testservice1 = new Testservice();
         $res = $testservice1->selectSelfInfo($id);
 
-        return view('updateinfo',['id'=>$res->id,'name'=>$res->username,'photo'=>$res->photo_addr]);
+        return view('updateinfo',[
+            'id'=>$res->id,
+            'name'=>$res->name,
+            'photo'=>$res->photo_addr
+        ]);
+
     }
     //修改个人信息
     public function modifySelfInfo(Request $request)

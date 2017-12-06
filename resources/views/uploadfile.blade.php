@@ -19,7 +19,7 @@
 <div class="upload">
 <form action="" method="post" enctype="multipart/form-data">
     请选择文件:
-    <input class="uploadfile" type="file" name="afile" value="上传文件" required>
+    <input class="uploadfile" type="file" name="afile" required>
 </form>
 </div>
 @endsection
