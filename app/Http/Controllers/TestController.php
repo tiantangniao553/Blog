@@ -14,7 +14,7 @@ class TestController extends Controller
     {
         $testservice1 =new Testservice();
         $res = $testservice1->selectSpecific($id);
-        if($res)
+        if($res->hasdeleted == 0)
         {
             return view('article',['id'=>$id,'authorid'=>$res->authorid,'content'=>$res->content,'title'=>$res->title]);
         }
@@ -27,7 +27,7 @@ class TestController extends Controller
         $testservice1 =new Testservice();
         $res = $testservice1->selectAll($id);
 
-        if(!$res)
+        if(sizeof($res) == 0)
             return response()->json(['message'=>'He is too lazy to leave anything']);
 
         $i=0;
@@ -37,6 +37,7 @@ class TestController extends Controller
         {
             if($res[$key]->hasdelete == 0)
             {
+                echo($key);
                 $result[$i] = $value;
                 $i++;
             }
@@ -48,9 +49,8 @@ class TestController extends Controller
 
     }
     //获取博主信息 v
-    public function getInfo()
+    public function getInfo($id)
     {
-        $id=Auth::id();
         $testservice1 =new Testservice();
         $res = $testservice1->selectinfo($id);
         if($res)
@@ -63,17 +63,29 @@ class TestController extends Controller
 
     }
     //获取自己的博文 v
-    public function getSelf($id)
+    public function getSelf()
     {
-        if(!Auth::check())
-            return redirect('login');
-
         $testservice1 =new Testservice();
+        $id = Auth::id();
+        $res = $testservice1->selectSelf($id);
+        if(sizeof($res) == 0)
+            return response()->json(['message'=>'you haven\'t writen any article']);
 
-        $res = $testservice1->selectSelf(Auth::id());
-        if($res)
-            return response()->json($res);
-        return response()->json(['message'=>'you haven\'t writen any article']);
+        $i=0;
+        $result=[];
+        foreach ($res as $key => $value)
+        {
+            if($res[$key]->hasdelete == 0)
+            {
+                echo($key);
+                $result[$i] = $value;
+                $i++;
+            }
+        }
+
+        $res = $testservice1->selectinfo($id);
+
+        return view('articles',['result'=>$result,'authorid'=>$res->id,'name'=>$res->name]);
 
     }
     //发表博文 v
@@ -85,6 +97,7 @@ class TestController extends Controller
             return response()->json(["message"=>"publish an article successfully",'success'=>true]);
         return response()->json(["message"=>"fail to publish an article"]);
     }
+
     //修改博文 v
     public function modifyArticle(Request $request)
     {
@@ -113,8 +126,9 @@ class TestController extends Controller
     {
         $testservice1 =new Testservice();
         $res = $testservice1->selectDetail($id);
+
         if($res->hasdeleted == 0)
-            return view('')
+            return $res;
         return response()->json(['message'=>'no such article']);
     }
     //删除评论
@@ -128,12 +142,29 @@ class TestController extends Controller
             return response()->json(['success'=>true,"message"=>"some great comment has fallen"]);
         return response()->json(["message"=>"fail to delete something"]);
     }
-    //写评论
+    //查看评论
+    public function selectComment($id)
+    {
+        $testserver1 = new Testservice();
+        $res = $testserver1->selectComment($id);
+
+        $result=[];
+        $i=0;
+        foreach($res as $key=>$value)
+        {
+            if($res[$key]->hasdeleted == 0)
+            {
+                $result[$i] = $res[$key];
+                $i++;
+            }
+        }
+        if(sizeof($result))
+            return view('comments',['result'=>$result]);
+        return response()->json(['message'=>'no comments for this article now']);
+    }
+    //写评论(跳转)
     public function writeComment($id)
     {
-        if(!Auth::check())
-            return url('login');
-
         return view('writeComment',['id'=>$id,'authorid'=>Auth::id()]);
     }
 
@@ -141,6 +172,7 @@ class TestController extends Controller
     public function addComment(Request $request)
     {
         $testservice1 = new Testservice();
+        $request->commentedid = Input::get('id');
         $res = $testservice1->addComment($request);
         if($res)
             return response()->json(["message"=>"add something indescribable"]);
@@ -149,20 +181,15 @@ class TestController extends Controller
     //获取个人信息 v
     public function getSelfInfo()
     {
-        if(!Auth::check())
-            return redirect('login');
-
         $id=Auth::id();
         $testservice1 = new Testservice();
         $res = $testservice1->selectSelfInfo($id);
 
         return view('information',['id'=>$res->id,'name'=>$res->username,'photo'=>$res->photo_addr]);
     }
+
     public function selectInfo()
     {
-        if(!Auth::check())
-            return route('login');
-
         $id=Auth::id();
         $testservice1 = new Testservice();
         $res = $testservice1->selectSelfInfo($id);
@@ -177,9 +204,6 @@ class TestController extends Controller
     //修改个人信息
     public function modifySelfInfo(Request $request)
     {
-        if(!Auth::check())
-            return url('login');
-
         $testservice1 = new Testservice();
         $res = $testservice1->modifySelfMessage($request);
         if($res)

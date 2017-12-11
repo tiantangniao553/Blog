@@ -13,6 +13,7 @@ use App\Http\TestModel2;
 use App\Http\TestModel1;
 use App\Http\ModefyModel;
 use database\seeds\MySeeder;
+use Illuminate\Support\Facades\Auth;
 use Models\Test;
 
 class Testservice
@@ -42,8 +43,9 @@ class Testservice
     public function publish($data)
     {
         $res = new TestModel1;
+        $res->title = $data->title;
         $res->content = $data->content;
-        $res->authorid = config('app.userID');
+        $res->authorid = Auth::id();
         if($res->save())
             return true;
         return false;
@@ -52,12 +54,13 @@ class Testservice
 
     public function modifyArticle($data)
     {
-        $check_id = (int)config('app.userID');
+        $check_id = Auth::id();
         $res = TestModel1::find($data->id);
 
         if($res->authorid != $check_id)
             return "not hiself article";
 
+        $res->title = $data->title;
         $res->content = $data->content;
         if($res->save())
             return true;
@@ -106,6 +109,11 @@ class Testservice
         if($res->save())
             return true;
         return false;
+    }
+
+    public function selectComment($id)
+    {
+        return TestModel2::where('commentedid',$id)->get();
     }
 
     public function selectSelfInfo($id)

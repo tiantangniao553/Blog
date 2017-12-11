@@ -15,11 +15,22 @@ function cancel(){
     }
 }
 
+function submitModify() {
+    var form = new FormData();
+
+    form.append('name',document.getElementById("name").value);
+
+    fetch('/user',{
+        method:"PUT",
+        body:form
+    })
+}
+
 </script>
 @show
 @section('middle')
 <div class="capacity">
-    <form action="" method="post" enctype="multipart/form-data">
+    <form id="infomation" action="" method="" enctype="multipart/form-data">
     <table class="table-info">
         <tr>
             <td style="width:200px;">博主姓名</td>

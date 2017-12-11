@@ -34,7 +34,7 @@ Route::get('/try',function (){
     if(Auth::check())
     {
         $a = new TestController();
-        return $a->getInfo();
+        return $a->getSelfInfo();
     }
     return redirect(url('index'));
 });
@@ -52,12 +52,6 @@ Route::get("test", "MyController@first_try");
 //获取特定博文 1
 Route::get("/visitor/blog/{id}","TestController@getSpecific");
 
-        //页面跳转
-Route::get("/selectById",function(){
-    $id=input::get('id');
-    return redirect(url("visitor/blog/{$id}"));
-});
-
 //获取全部博文 2
 Route::get("/visitor/blog/u/{id}","TestController@getAll");
 
@@ -65,22 +59,26 @@ Route::get("/visitor/blog/u/{id}","TestController@getAll");
 Route::get("/visitor/u/{id}","TestController@getInfo");
 
 //获取自己博文
-Route::get("/blog/p/{page}","TestController@getSelf")
+Route::get("/blog/p","TestController@getSelf")
     ->middleware("checkvisitor");
 
 //发表一篇博文
+Route::get("writeArticle",function () {
+    return view('writeArticle',['authorid' => Auth::id()]);
+})->middleware('checkvisitor');
+
 Route::post("/blog","TestController@publish")
     ->middleware("checkvisitor");
 
-//修改自己的博文 check
-Route::get("/updateArticle/{$id}",function() {
-    return view()
-})
+//修改博文 check
+Route::get("/updateArticle/{id}",function($id) {
+    $res = (new TestController())->showDetail($id);
+    return view('modifyarticle',['res'=>$res]);
+});
 Route::put("/blog/{id}","TestController@modifyArticle")
     ->middleware("checkvisitor");
 
 //删除自己的博文 check
-Route::post("/updateArticle","TestContrloller@");
 Route::delete("/blog/{id}","TestController@deleteArticle")
     ->middleware("checkvisitor");
 
@@ -93,10 +91,10 @@ Route::delete("/comment/{id}","TestController@deleteComment")
     ->middleware("checkvisitor");
 
 //添加评论
-Route::get("addComment/{id}","TestController@writeComment");
-
-Route::post("comment/blog/id","TestController@addComment")
+Route::post("comment/blog/{id}","TestController@addComment")
     ->middleware("checkvisitor");
+//查看评论
+Route::get("comment/blog/{id}","TestController@selectComment");
 
 //查看个人信息
 Route::get("/user","TestController@getSelfInfo")

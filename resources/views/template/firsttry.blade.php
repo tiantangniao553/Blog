@@ -57,37 +57,28 @@ h1{
     height:100px;
 }
 
-.table-index td{
-    width:350px;
-    padding:0;
-    text-align:center;
+.table-index a{
+    heiht:100px;
+    margin-left:150px;
 }
 
-.table-index td a:link{
-    color: #000000;
+.table-index a:link{
+    color: #ff0000;
     font-size:50px;
     font-weight:900;
     text-decoration:none;
 }
 
-.table-index td a:visited{
-    color: #3c0714;
+.table-index a:visited{
+    color: #ff0000;
     text-decoration:none;
 }
 
-.table-index td a:hover{
+.table-index a:hover{
     color: #00cccc;
     text-decoration:none;
     font-size:60px;
     font-weight:bolder;
-}
-
-.table-index td a:link{
-    color:#ff0000;
-}
-
-.table-index td a:visited{
-    color:#ff0000;
 }
 
 .capacity{
@@ -123,8 +114,7 @@ h1{
 
 </style>
 @section('style')
-@endsection
-
+@show
 @section('script')
 @show
 
@@ -145,14 +135,12 @@ h1{
 </div>
 <div class="head1">
     <h1>王健宇的博客</h1>
-<table class="table-index">
-    <tr>
-        <td><a href={{url('/try')}}>首页</a></td>
-        <td><a href="/visitor/blog/u/{{Auth::id()}}" >博文</a></td>
-        <td><a href={{url('select')}}>查询</a></td>
-        <td><a href="#">其它</a></td>
-    </tr>
-</table>
+<div class="table-index">
+        <a href={{url('/try')}}>首页</a>
+        <a href="/blog/p" >博文</a>
+        <a href={{url('select')}}>查询</a>
+        <a href="#">其它</a>
+</div>
 </div>
 <div class="middle">
     @section("middle")
