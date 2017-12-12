@@ -88,9 +88,8 @@ class Testservice
     public function deleteComment($id)
     {
         $res = TestModel2::find($id);
-        $check_id = config('app.userID');
 
-        if($check_id != $res->authorid)
+        if(Auth::id() != $res->authorid)
             return 'not hiself article';
 
         $res->hasdelete = 1;
@@ -105,6 +104,15 @@ class Testservice
         $res->content = $data->content;
         $res->authorid = $data->authorid;
         $res->commentedid = $data->commentedid;
+        if($res->save())
+            return true;
+        return false;
+    }
+
+    public function modifyComment($data)
+    {
+        $res = TestModel2::find($data->id);
+        $res->content = $data->content;
         if($res->save())
             return true;
         return false;

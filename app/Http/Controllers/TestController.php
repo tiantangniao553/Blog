@@ -15,6 +15,7 @@ class TestController extends Controller
         $testservice1 =new Testservice();
         $res = $testservice1->selectSpecific($id);
         $comments = $testservice1->selectComment($id);
+
         if($res->hasdeleted == 0)
         {
             foreach($comments as $key => $value)
@@ -185,7 +186,6 @@ class TestController extends Controller
     public function addComment(Request $request)
     {
         $testservice1 = new Testservice();
-       // dd($request);
         $res = $testservice1->addComment($request);
         if($res)
             return response()->json(["message"=>"add something indescribable"]);
@@ -199,6 +199,14 @@ class TestController extends Controller
         return view('modifyComment',['res'=>$res]);
     }
 
+    public function modifyComment(Request $request)
+    {
+        $testservice1 = new Testservice();
+        $res = $testservice1->modifyComment($request);
+        if($res)
+            return response()->json(["message"=>"modify comment successfully"]);
+        return response()->json(["message"=>"fail to modify comment"]);
+    }
     //获取个人信息 v
     public function getSelfInfo()
     {
@@ -220,8 +228,6 @@ class TestController extends Controller
             'name'=>$res->name,
             'photo'=>$res->photo_addr
         ]);
-
-
     }
     //修改个人信息
     public function modifySelfInfo(Request $request)

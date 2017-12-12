@@ -76,8 +76,9 @@ h1{
 .table-index a:hover{
     color: #00cccc;
     text-decoration:none;
-    font-size:60px;
+    transform: scale(1.5);
     font-weight:bolder;
+    display:inline-block;
 }
 
 .capacity{

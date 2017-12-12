@@ -43,9 +43,9 @@ function cancel() {
 @section('middle')
 <div class="capacity">
 <table class="table-info">
-<form action={{url('/blog/'.$res->id)}} method="post">
+<form action={{url('modifyComment/'.$res->id)}} method="post">
     {{csrf_field()}}
-    <input typr="hidden" name="id" value={{$res->id}}>
+    <input type="hidden" name="id" value={{$res->id}}>
     <input type="hidden" name="_method" value="put">
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <tr>

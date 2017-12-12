@@ -13,7 +13,7 @@
 <script>
 
 function modifyComment(id) {
-    location.href = "modifyComment" + id;
+    window.location.href = "../../modifyComment/" + id;
 }
 function deleteComment(id) {
 
@@ -23,6 +23,7 @@ function deleteComment(id) {
 @endsection
 
 @section('middle')
+
 <div class="capacity">
     <table class="table-info" style="width:500px;">
         <tr>

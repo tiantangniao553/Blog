@@ -49,7 +49,7 @@ Route::get("mysql","MysqlController@chaxun");
 Route::get("test", "MyController@first_try");
 
 
-//获取特定博文 1
+//获取特定博文和评论
 Route::get("/visitor/blog/{id}","TestController@getSpecific");
 
 //获取全部博文 2
@@ -87,8 +87,11 @@ Route::delete("/comment/{id}","TestController@deleteComment")
 //写评论
 Route::get("writeComment/{id}","TestController@writeComment");
 
-//修改评论
+//修改评论(跳转)
 Route::get("modifyComment/{id}","TestController@selectOneComment");
+
+//提交修改
+Route::put("modifyComment/{id}","TestController@modifyComment");
 
 //提交评论
 Route::post("comment/blog/{id}","TestController@addComment")
