@@ -9,17 +9,30 @@ use Illuminate\Support\Facades\Auth;
 
 class TestController extends Controller
 {
-    //获取特定博文  v
+    //获取特定博文和评论
     public function getSpecific($id)
     {
         $testservice1 =new Testservice();
         $res = $testservice1->selectSpecific($id);
+        $comments = $testservice1->selectComment($id);
         if($res->hasdeleted == 0)
         {
-            return view('article',['id'=>$id,'authorid'=>$res->authorid,'content'=>$res->content,'title'=>$res->title]);
+            foreach($comments as $key => $value)
+            {
+                if($comments[$key]->hasdeleted == 1)
+                {
+                    unset($comments[$key]);
+                }
+            }
+            return view('articleAndComments',[
+                'id'=>$id,
+                'authorid'=>$res->authorid,
+                'content'=>$res->content,
+                'title'=>$res->title,
+                'result'=>$comments
+            ]);
         }
         return response()->json(['message'=>'No such article']);
-
     }
     //获取所有博文 v
     public function getAll($id)
@@ -110,6 +123,13 @@ class TestController extends Controller
             return response()->json(['success'=>true, "message"=>"modify something amazing"]);
         return response()->json(["message"=>"fail to modify"]);
     }
+    //修改博文
+    public function showArticle($id)
+    {
+        $testservice1 =new Testservice();
+        $res = $testservice1->selectSpecific($id);
+        return view('modifyarticle', ['res' => $res]);
+    }
     //删除博文
     public function deleteArticle($id)
     {
@@ -121,16 +141,7 @@ class TestController extends Controller
             return response()->json(['success'=> true,"message"=>"you has deleted something marvelous"]);
         return response()->json(['message'=>'fail to delete sth']);
     }
-    //查看特定博文
-    public function showDetail($id)
-    {
-        $testservice1 =new Testservice();
-        $res = $testservice1->selectDetail($id);
 
-        if($res->hasdeleted == 0)
-            return $res;
-        return response()->json(['message'=>'no such article']);
-    }
     //删除评论
     public function deleteComment($id)
     {
@@ -148,6 +159,8 @@ class TestController extends Controller
         $testserver1 = new Testservice();
         $res = $testserver1->selectComment($id);
 
+        if(sizeof($res) == 0)
+            return response()->json(['message'=>'no comments for this article now']);
         $result=[];
         $i=0;
         foreach($res as $key=>$value)
@@ -172,12 +185,20 @@ class TestController extends Controller
     public function addComment(Request $request)
     {
         $testservice1 = new Testservice();
-        $request->commentedid = Input::get('id');
+       // dd($request);
         $res = $testservice1->addComment($request);
         if($res)
             return response()->json(["message"=>"add something indescribable"]);
         return response()->json(["message"=>"fail to add something"]);
     }
+    //抽取评论
+    public function selectOneComment($id)
+    {
+        $testservice1 = new Testservice();
+        $res = $testservice1->selectOneComment($id);
+        return view('modifyComment',['res'=>$res]);
+    }
+
     //获取个人信息 v
     public function getSelfInfo()
     {
@@ -199,6 +220,7 @@ class TestController extends Controller
             'name'=>$res->name,
             'photo'=>$res->photo_addr
         ]);
+
 
     }
     //修改个人信息

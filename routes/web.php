@@ -71,10 +71,8 @@ Route::post("/blog","TestController@publish")
     ->middleware("checkvisitor");
 
 //修改博文 check
-Route::get("/updateArticle/{id}",function($id) {
-    $res = (new TestController())->showDetail($id);
-    return view('modifyarticle',['res'=>$res]);
-});
+Route::get("/updateArticle/{id}","TestController@showArticle");
+
 Route::put("/blog/{id}","TestController@modifyArticle")
     ->middleware("checkvisitor");
 
@@ -82,17 +80,20 @@ Route::put("/blog/{id}","TestController@modifyArticle")
 Route::delete("/blog/{id}","TestController@deleteArticle")
     ->middleware("checkvisitor");
 
-//查看特定博文
-Route::get("/blog/{id}","TestController@showDetail")
-    ->middleware("checkvisitor");
-
 //删除评论 check
 Route::delete("/comment/{id}","TestController@deleteComment")
     ->middleware("checkvisitor");
 
-//添加评论
+//写评论
+Route::get("writeComment/{id}","TestController@writeComment");
+
+//修改评论
+Route::get("modifyComment/{id}","TestController@selectOneComment");
+
+//提交评论
 Route::post("comment/blog/{id}","TestController@addComment")
     ->middleware("checkvisitor");
+
 //查看评论
 Route::get("comment/blog/{id}","TestController@selectComment");
 
@@ -103,7 +104,7 @@ Route::get("/user","TestController@getSelfInfo")
 //修改个人信息
 Route::get("/updateinfo","TestController@selectInfo");
 
-
+//
 Route::put("/user","TestController@modifySelfInfo")
     ->middleware("checkvisitor");
 
@@ -119,3 +120,7 @@ Route::post('/uploadfile','UploadController@uploadFile');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/error',function() {
+    return view('template/error');
+});

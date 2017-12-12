@@ -20,11 +20,11 @@ function modifyarticle(id) {
 }
 
 function showComment(id) {
-    window.location.href = '/comment/blog/' + id;
+    window.location.href = '/visitor/blog/' + id;
 }
 
-function addComment() {
-    window.location.href = ''
+function addComment(id) {
+    window.location.href = '/writeComment/' + id;
 }
 </script>
 @show
@@ -59,8 +59,10 @@ function addComment() {
             </tr>
             <tr>
                 <td colspan="4">
+                @if(Auth::id() == $authorid)
                     <input type="button" value="修改博文" onclick="modifyarticle({{$result[$key]->id}})">
-                    <input type="button" value="删除博文" onclick="deleteArticle({{$result[$key]->id}})">
+                    <input type="submit" value="删除博文" onclick="deleteArticle({{$result[$key]->id}})">
+                @endif
                     <input type="button" value="查看评论" onclick="showComment({{$result[$key]->id}})">
                     <input type="button" value="添加评论" onclick="addComment({{$result[$key]->id}})">
                 </td>
@@ -69,5 +71,4 @@ function addComment() {
         @endif
     </table>
 </div>
-{{--<!--deleteArticle({{$result[$key]->id}})-->--}}
 @endsection

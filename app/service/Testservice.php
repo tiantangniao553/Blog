@@ -56,7 +56,6 @@ class Testservice
     {
         $check_id = Auth::id();
         $res = TestModel1::find($data->id);
-
         if($res->authorid != $check_id)
             return "not hiself article";
 
@@ -81,9 +80,9 @@ class Testservice
         return false;
     }
 
-    public function selectDetail($id)
+    public function selectComment($id)
     {
-        return TestModel1::find($id);
+        return TestModel2::where('commentedid',$id)->get();
     }
 
     public function deleteComment($id)
@@ -103,7 +102,7 @@ class Testservice
     public function addComment($data)
     {
         $res = new TestModel2;
-        $res->content = $data->comment;
+        $res->content = $data->content;
         $res->authorid = $data->authorid;
         $res->commentedid = $data->commentedid;
         if($res->save())
@@ -111,9 +110,10 @@ class Testservice
         return false;
     }
 
-    public function selectComment($id)
+    public function selectOneComment($id)
     {
-        return TestModel2::where('commentedid',$id)->get();
+
+        return TestModel2::find($id);
     }
 
     public function selectSelfInfo($id)
@@ -123,9 +123,9 @@ class Testservice
 
     public function modifySelfMessage($data)
     {
-        $id=config('app.userID');
+        $id=Auth::id();
         $res = TestModel3::find($id);
-        $res->username = $data->name;
+        $res->name = $data->name;
         $res->photo_addr = $data->photo_addr;
         if($res->save())
             return true;

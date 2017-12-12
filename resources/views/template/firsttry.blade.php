@@ -54,11 +54,10 @@ h1{
     padding-top:275px;
     padding-left:200px;
     width:1300px;
-    height:100px;
+    height:120px;
 }
 
 .table-index a{
-    heiht:100px;
     margin-left:150px;
 }
 

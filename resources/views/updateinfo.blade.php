@@ -30,11 +30,13 @@ function submitModify() {
 @show
 @section('middle')
 <div class="capacity">
-    <form id="infomation" action="" method="" enctype="multipart/form-data">
+    <form id="infomation" action="/user" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="_method" value="put">
+        <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <table class="table-info">
         <tr>
             <td style="width:200px;">博主姓名</td>
-            <td style="width:230px;"><input type="text" id="name" value={{$name}}></td>
+            <td style="width:230px;"><input type="text" name="name" id="name" value={{$name}}></td>
             <td><input type="button" onclick="restore()" value="恢复原姓名"></td>
         </tr>
         <tr>
