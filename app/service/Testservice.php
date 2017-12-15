@@ -69,15 +69,15 @@ class Testservice
     public function deleteArticle($id)
     {
         $res = TestModel1::find($id);
-        $check_id = config('app.userID');
 
-        if($check_id != $res->authorid)
-            return 'not hiself article';
+        if(Auth::id() != $res->authorid)
+            return 1; //1代表不是他自己的文章
 
-        $res->hasdelete = 1;
-        if($res->save())
-            return true;
-        return false;
+        $res->hasdeleted = 1;
+
+        if($res->save());
+            return 0;
+        return 2;
     }
 
     public function selectComment($id)
@@ -90,12 +90,12 @@ class Testservice
         $res = TestModel2::find($id);
 
         if(Auth::id() != $res->authorid)
-            return 'not hiself article';
+            return 1; //1代表不是他自己的评论
 
-        $res->hasdelete = 1;
+        $res->hasdeleted = 1;
         if($res->save())
-            return true;
-        return false;
+            return 0;
+        return 2;
     }
 
     public function addComment($data)

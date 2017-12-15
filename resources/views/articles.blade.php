@@ -8,10 +8,15 @@ function writeArticle() {
 }
 function deleteArticle(id) {
     if(confirm("你确定要删除该博文吗")) {
-        fetch('/blog/'+id, {
+        fetch('/deleteBlog/'+id, {
             method: "DELETE",
-            body:new FormData()
-        });
+            credentials:'include',
+        }).then(function (Response) {
+            return Response.json();
+        }).then(function (message) {
+            alert(message["message"]);
+            location.reload();
+        })
     }
 }
 
@@ -53,7 +58,7 @@ function addComment(id) {
             </tr>
             <tr>
                 <td colspan="4" readonly style="font-weight:bold">{{$result[$key]->title}}</td>
-            </tr>
+            </tr>-
             <tr>
                 <td colspan="4" readonly>{{$result[$key]->content}}</td>
             </tr>

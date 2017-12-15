@@ -76,12 +76,8 @@ Route::get("/updateArticle/{id}","TestController@showArticle");
 Route::put("/blog/{id}","TestController@modifyArticle")
     ->middleware("checkvisitor");
 
-//删除自己的博文 check
-Route::delete("/blog/{id}","TestController@deleteArticle")
-    ->middleware("checkvisitor");
-
 //删除评论 check
-Route::delete("/comment/{id}","TestController@deleteComment")
+Route::delete("comment/{id}","TestController@deleteComment")
     ->middleware("checkvisitor");
 
 //写评论
@@ -111,6 +107,13 @@ Route::get("/updateinfo","TestController@selectInfo");
 Route::put("/user","TestController@modifySelfInfo")
     ->middleware("checkvisitor");
 
+Route::get('test', function(){
+    dd(Auth::id());
+});
+
+//删除自己的博文 check
+Route::delete("/deleteBlog/{id}","TestController@deleteArticle");
+    //->middleware("checkvisitor");
 
 Route::get('/home', 'HomeController@index')->name('home');
 //上传文件

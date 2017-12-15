@@ -89,14 +89,12 @@ class TestController extends Controller
         $result=[];
         foreach ($res as $key => $value)
         {
-            if($res[$key]->hasdelete == 0)
+            if($res[$key]->hasdeleted == 0)
             {
-                echo($key);
                 $result[$i] = $value;
                 $i++;
             }
         }
-
         $res = $testservice1->selectinfo($id);
 
         return view('articles',['result'=>$result,'authorid'=>$res->id,'name'=>$res->name]);
@@ -136,11 +134,12 @@ class TestController extends Controller
     {
         $testservice1 =new Testservice();
         $res = $testservice1->deleteArticle($id);
-        if($res ==='not hiself article')
+        if($res == 1)
             return response()->json(["message"=>"cannot delete other's article"]);
-        else if($res)
+        else if($res == 0)
             return response()->json(['success'=> true,"message"=>"you has deleted something marvelous"]);
         return response()->json(['message'=>'fail to delete sth']);
+
     }
 
     //删除评论
@@ -148,9 +147,9 @@ class TestController extends Controller
     {
         $testservice1 =new Testservice();
         $res = $testservice1->deleteComment($id);
-        if($res === 'not hiself comment')
+        if($res == 1)
             return response()->json(["message"=>"cannot delete other's article"]);
-        else if($res)
+        else if($res == 0)
             return response()->json(['success'=>true,"message"=>"some great comment has fallen"]);
         return response()->json(["message"=>"fail to delete something"]);
     }

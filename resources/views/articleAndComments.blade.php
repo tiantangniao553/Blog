@@ -16,7 +16,18 @@ function modifyComment(id) {
     window.location.href = "../../modifyComment/" + id;
 }
 function deleteComment(id) {
-
+    if(confirm('你确定要删除该评论吗'))
+    {
+        fetch('../../comment/'+id,{
+            method:"DELETE",
+            credentials:'include'
+        }).then(function (Response) {
+            return Response.json();
+        }).then(function (message) {
+            alert(message['message']);
+            location.reload();
+        })
+    }
 }
 
 </script>
